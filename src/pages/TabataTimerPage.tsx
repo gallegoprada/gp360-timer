@@ -80,6 +80,9 @@ const TabataTimer: React.FC = () => {
 
   return (
     <div>
+      <div className="bg-gray-100  hover:bg-gray-200 border border-gray-300 rounded-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none w-full">
+        <Link to="/">Back</Link>
+      </div>
       {isFinished ? (
         <div>
           <div className="bg-gray-100  hover:bg-gray-200 border border-gray-300 rounded-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none w-full">

@@ -28,25 +28,25 @@ const FightTimer: React.FC = () => {
 
     for (let i = 0; i < rounds; i++) {
       if (workMinutes) {
-        // timersArray.push({
-        //   round: i + 1,
-        //   seconds: workMinutes * 60,
-        //   type: "work",
-        // });
-
-        // if (i < rounds - 1) {
-        //   timersArray.push({ round: i + 1, seconds: 60, type: "rest" });
-        // }
-
         timersArray.push({
           round: i + 1,
-          seconds: workMinutes * 3,
+          seconds: workMinutes * 60,
           type: "work",
         });
 
         if (i < rounds - 1) {
-          timersArray.push({ round: i + 1, seconds: 4, type: "rest" });
+          timersArray.push({ round: i + 1, seconds: 60, type: "rest" });
         }
+
+        // timersArray.push({
+        //   round: i + 1,
+        //   seconds: workMinutes * 3,
+        //   type: "work",
+        // });
+
+        // if (i < rounds - 1) {
+        //   timersArray.push({ round: i + 1, seconds: 4, type: "rest" });
+        // }
       }
     }
 
@@ -95,6 +95,9 @@ const FightTimer: React.FC = () => {
 
   return (
     <div>
+      <div className="bg-gray-100  hover:bg-gray-200 border border-gray-300 rounded-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none w-full">
+        <Link to="/">Back</Link>
+      </div>
       {isFinished ? (
         <div>
           <div className="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none w-full">
@@ -106,21 +109,32 @@ const FightTimer: React.FC = () => {
         </div>
       ) : (
         timers.length > 0 && (
-          <div className="flex">
-            {/* <SecondsCountDownDisplayer
-              seconds={currentSeconds}
-              type={timers[currentPhaseIndex].type}
-            /> */}
-            <div>
-              ROUND {timers[currentPhaseIndex].round}/{rounds}
-              <TimerDisplay totalSeconds={currentSeconds} />
+          <div className="flex flex-col items-center h-screen w-screen">
+            <div className="flex flex-col items-center w-full justify-center  flex-1">
+              <div className="text-center font-bold text-3xl">
+                ROUND {timers[currentPhaseIndex].round}/{rounds}
+                <TimerDisplay totalSeconds={currentSeconds} />
+              </div>
+              <div className="mt-10" />
+              <button
+                onClick={togglePause}
+                className="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-4 rounded-md"
+              >
+                {isPaused ? "Resume" : "Pause"}
+              </button>
             </div>
-            <button
-              onClick={togglePause}
-              className="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-4"
-            >
-              {isPaused ? "Resume" : "Pause"}
-            </button>
+            <div>
+              <div className="mt-10" />
+              <div className="flex w-full justify-center items-end space-x-8 space-y-8">
+                <img
+                  src="/images/gp360-logo.png"
+                  alt="Logo"
+                  height={"200px"}
+                  width={"200px"}
+                />
+              </div>
+              <div className="mt-10" />
+            </div>
           </div>
         )
       )}
