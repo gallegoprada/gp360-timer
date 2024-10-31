@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
-import SecondsCountDownDisplayer from "../components/SecondsCountDownDisplayer";
+// import SecondsCountDownDisplayer from "../components/SecondsCountDownDisplayer";
 import TimerDisplay from "../components/SecondsToMinutesDisplay";
 
 interface TimerPhase {

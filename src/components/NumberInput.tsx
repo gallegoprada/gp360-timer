@@ -18,7 +18,7 @@ export default function NumberInput({
 
   const handleChange = (value: number) => {
     setCount(value);
-    debugger;
+    // debugger;
     onChange(value);
   };
 

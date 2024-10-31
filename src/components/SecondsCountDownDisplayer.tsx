@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 interface CountdownProps {
   seconds: number; // initial seconds to count down from
@@ -6,7 +6,7 @@ interface CountdownProps {
 }
 
 const SecondsCountDownTimer: React.FC<CountdownProps> = ({ seconds, type }) => {
-  const [timeLeft, setTimeLeft] = useState<number>(seconds);
+  // const [timeLeft, setTimeLeft] = useState<number>(seconds);
 
   // Define background color based on the type
   const getBackgroundColor = () => {
