@@ -1,1 +1,1 @@
-{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/components/numberinput.tsx"],"version":"5.6.3"}
+{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/components/numberinput.tsx","./src/components/secondscountdowndisplayer.tsx","./src/components/secondstominutesdisplay.tsx","./src/pages/fightpage.tsx","./src/pages/fighttimerpage.tsx","./src/pages/homepage.tsx","./src/pages/tabatapage.tsx","./src/pages/tabatatimerpage.tsx"],"version":"5.6.3"}
