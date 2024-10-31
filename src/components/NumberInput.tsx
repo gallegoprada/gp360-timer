@@ -1,7 +1,7 @@
 //this is a functional tsx component that allows the user to input a number
 // will be used to select the amount of rounds in the game
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface NumberInputProps {
   label: string;
