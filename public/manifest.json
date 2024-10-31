@@ -1,0 +1,25 @@
+{
+  "name": "GP360-Kiosk",
+  "short_name": "GP360-Kiosk",
+  "start_url": "/",
+  "display": "fullscreen",
+  "background_color": "#22232b",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/images/gp360kiosk96.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "/images/gp360kiosk192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/images/gp360kiosk512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
