@@ -15,7 +15,7 @@ const FightTimer: React.FC = () => {
   // Get the values of query parameters and convert them to numbers
   const workMinutes = Number(searchParams.get("work"));
   const rounds = Number(searchParams.get("rounds"));
-
+  const restMinutes = Number(searchParams.get("rest"));
   // State to hold the sequence of timer phases
   const [timers, setTimers] = useState<TimerPhase[]>([]);
   const [currentPhaseIndex, setCurrentPhaseIndex] = useState(0);
@@ -28,25 +28,33 @@ const FightTimer: React.FC = () => {
 
     for (let i = 0; i < rounds; i++) {
       if (workMinutes) {
-        timersArray.push({
-          round: i + 1,
-          seconds: workMinutes * 60,
-          type: "work",
-        });
-
-        if (i < rounds - 1) {
-          timersArray.push({ round: i + 1, seconds: 60, type: "rest" });
-        }
-
         // timersArray.push({
         //   round: i + 1,
-        //   seconds: workMinutes * 3,
+        //   seconds: workMinutes * 60,
         //   type: "work",
         // });
 
         // if (i < rounds - 1) {
-        //   timersArray.push({ round: i + 1, seconds: 4, type: "rest" });
+        //   timersArray.push({
+        //     round: i + 1,
+        //     seconds: restMinutes * 60,
+        //     type: "rest",
+        //   });
         // }
+
+        timersArray.push({
+          round: i + 1,
+          seconds: workMinutes * 3,
+          type: "work",
+        });
+
+        if (i < rounds - 1) {
+          timersArray.push({
+            round: i + 1,
+            seconds: restMinutes * 3,
+            type: "rest",
+          });
+        }
       }
     }
 
@@ -55,7 +63,7 @@ const FightTimer: React.FC = () => {
     if (timersArray.length > 0) {
       setCurrentSeconds(timersArray[0].seconds); // Initialize with the first phase’s seconds
     }
-  }, [workMinutes, rounds]);
+  }, [workMinutes, rounds, restMinutes]);
 
   // Countdown logic
   useEffect(() => {

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import NumberInput from "../components/NumberInput";
+import MainLayout from "../components/MainLayout";
+import HeaderWithBackButton from "../components/HeaderWithBackButton";
 
 const Tabata: React.FC = () => {
   const [warmUp, setWarmUp] = useState(5);
@@ -10,11 +12,9 @@ const Tabata: React.FC = () => {
   const [coolDown, setCoolDown] = useState(6);
 
   return (
-    <div className="flex flex-col justify-between min-h-screen min-w-screen bg-hero-pattern bg-cover bg-cente p-20">
-      <div className="">
-        <div className="bg-gray-100  hover:bg-gray-200 border border-gray-300 rounded-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none w-full">
-          <Link to="/">Back</Link>
-        </div>
+    <MainLayout>
+      <>
+        <HeaderWithBackButton />
         <div className="flex w-full justify-center items-end space-x-8 space-y-8">
           {/* <img
             src="/images/gp360-logo.png"
@@ -76,12 +76,8 @@ const Tabata: React.FC = () => {
             Start
           </Link>
         </div>
-      </div>
-
-      <div className="read-the-docs">
-        © 2024 GP360 Enterprise. All rights reserved.
-      </div>
-    </div>
+      </>
+    </MainLayout>
   );
 };
 

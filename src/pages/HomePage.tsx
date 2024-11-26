@@ -1,35 +1,33 @@
-import React from "react";
+import React, { Children, ReactNode } from "react";
 import { Link } from "react-router-dom";
+import MenuItem from "../components/MenuItem";
+import MainLayout from "../components/MainLayout";
 
-const Fight: React.FC = () => {
+const HomePageContent: React.FC = () => {
   return (
-    <div className="flex flex-col justify-between min-h-screen min-w-screen bg-hero-pattern bg-cover bg-cente p-20">
-      <div className="">
-        <div className="flex w-full justify-center items-end space-x-8 space-y-8">
-          <img
-            src="/images/gp360-logo.png"
-            alt="Logo"
-            height={"200px"}
-            width={"200px"}
-          />
-        </div>
-        <div className="mt-20" />
-        <div className="w-auto h-auto">
-          <div className="bg-gray-100  hover:bg-gray-200 border border-gray-300 rounded-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none w-full">
-            <Link to="/fight">Fight</Link>
-          </div>
-          <div className="mt-10" />
-          <div className="bg-gray-100  hover:bg-gray-200 border border-gray-300 rounded-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none w-full">
-            <Link to="/tabata">Timer</Link>
-          </div>
-        </div>
+    <>
+      <div className="flex w-full justify-center landscape:justify-end lg:landscape:justify-center space-x-8 space-y-8 h-[20cqh] ">
+        <img
+          src="/images/gp360-logo.png"
+          alt="Logo"
+          className="aspect-[1.2] h-full"
+        />
       </div>
-
-      <div className="read-the-docs">
-        © 2024 GP360 Enterprise. All rights reserved.
+      <div className="w-full flex-1 flex flex-col  items-center gap-10 ">
+        <div className="hidden portrait:block lg:landscape:block mt-10" />
+        <MenuItem to="/fight" iconSrc="/images/fight.svg" label="Fight" />
+        <MenuItem to="/tabata" iconSrc="/images/timer.svg" label="Timer" />
       </div>
-    </div>
+    </>
   );
 };
 
-export default Fight;
+const Home: React.FC = () => {
+  return (
+    <MainLayout>
+      <HomePageContent />
+    </MainLayout>
+  );
+};
+
+export default Home;
