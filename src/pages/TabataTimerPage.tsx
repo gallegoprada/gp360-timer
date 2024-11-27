@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import SecondsCountDownDisplayer from "../components/SecondsCountDownDisplayer";
 import { Link } from "react-router-dom";
+import HeaderWithBackButton from "../components/HeaderWithBackButton";
 
 interface TimerPhase {
   seconds: number;
@@ -79,27 +80,30 @@ const TabataTimer: React.FC = () => {
   }, [currentSeconds, currentPhaseIndex, timers]);
 
   return (
-    <div>
-      <div className="bg-gray-100  hover:bg-gray-200 border border-gray-300 rounded-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none w-full">
-        <Link to="/">Back</Link>
+    <div className="h-[100vh] w-[100vw]">
+      <div className="h-[15%]">
+        <HeaderWithBackButton />
       </div>
-      {isFinished ? (
-        <div>
-          <div className="bg-gray-100  hover:bg-gray-200 border border-gray-300 rounded-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none w-full">
-            <Link to="/">Back</Link>
+      <div className="h-[85%]">
+        {isFinished ? (
+          <div className="flex justify-center items-center h-full">
+            <h1 className="text-center text-3xl font-bold mt-8 text-gray-200">
+              Bien Hecho!
+            </h1>
           </div>
-          <h1 className="text-center text-3xl font-bold mt-8 text-green-500">
-            Bien Hecho!
-          </h1>
-        </div>
-      ) : (
-        timers.length > 0 && (
-          <SecondsCountDownDisplayer
-            seconds={currentSeconds}
-            type={timers[currentPhaseIndex].type}
-          />
-        )
-      )}
+        ) : (
+          timers.length > 0 && (
+            <div className="w-full h-full flex justify-center items-center">
+              <div className="w-full h-full">
+                <SecondsCountDownDisplayer
+                  seconds={currentSeconds}
+                  type={timers[currentPhaseIndex].type}
+                />
+              </div>
+            </div>
+          )
+        )}
+      </div>
     </div>
   );
 };

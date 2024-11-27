@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 // import SecondsCountDownDisplayer from "../components/SecondsCountDownDisplayer";
 import TimerDisplay from "../components/SecondsToMinutesDisplay";
+import HeaderWithBackButton from "../components/HeaderWithBackButton";
 
 interface TimerPhase {
   round: number;
@@ -102,50 +103,61 @@ const FightTimer: React.FC = () => {
   };
 
   return (
-    <div>
-      <div className="bg-gray-100  hover:bg-gray-200 border border-gray-300 rounded-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none w-full">
-        <Link to="/">Back</Link>
+    <div className="h-[100vh] w-[100vw]">
+      <div className="h-[15%]">
+        <HeaderWithBackButton />
       </div>
-      {isFinished ? (
-        <div>
-          <div className="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none w-full">
-            <Link to="/">Back</Link>
+      <div
+        // style={{
+        //   backgroundImage: `url("/images/gp360-logo.png")`,
+        // }}
+        className="h-[85%] bg-center bg-no-repeat"
+      >
+        {isFinished ? (
+          <div className="flex justify-center items-center h-full">
+            <h1 className="text-center text-3xl font-bold mt-8 text-gray-200">
+              Bien Hecho!
+            </h1>
           </div>
-          <h1 className="text-center text-3xl font-bold mt-8 text-green-500">
-            Bien Hecho!
-          </h1>
-        </div>
-      ) : (
-        timers.length > 0 && (
-          <div className="flex flex-col items-center h-screen w-screen">
-            <div className="flex flex-col items-center w-full justify-center  flex-1">
-              <div className="text-center font-bold text-3xl">
-                ROUND {timers[currentPhaseIndex].round}/{rounds}
-                <TimerDisplay totalSeconds={currentSeconds} />
+        ) : (
+          timers.length > 0 && (
+            <div className="flex flex-col items-center h-screen w-screen">
+              <div className="flex flex-col items-center w-full justify-center  flex-1">
+                <div className="text-center font-bold text-3xl">
+                  {timers[currentPhaseIndex].type === "work"
+                    ? "ROUND "
+                    : "REST "}
+                  {timers[currentPhaseIndex].type === "work"
+                    ? timers[currentPhaseIndex].round
+                        .toString()
+                        .concat(" / ", rounds.toString())
+                    : timers[currentPhaseIndex].round.toString()}
+                  <TimerDisplay totalSeconds={currentSeconds} />
+                </div>
+                <div className="mt-10" />
+                <button
+                  onClick={togglePause}
+                  className="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-4 rounded-md"
+                >
+                  {isPaused ? "Resume" : "Pause"}
+                </button>
               </div>
-              <div className="mt-10" />
-              <button
-                onClick={togglePause}
-                className="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-4 rounded-md"
-              >
-                {isPaused ? "Resume" : "Pause"}
-              </button>
+              {/* <div>
+                <div className="mt-10" />
+                <div className="flex w-full justify-center items-end space-x-8 space-y-8">
+                  <img
+                    src="/images/gp360-logo.png"
+                    alt="Logo"
+                    height={"200px"}
+                    width={"200px"}
+                  />
+                </div>
+                <div className="mt-10" />
+              </div> */}
             </div>
-            <div>
-              <div className="mt-10" />
-              <div className="flex w-full justify-center items-end space-x-8 space-y-8">
-                <img
-                  src="/images/gp360-logo.png"
-                  alt="Logo"
-                  height={"200px"}
-                  width={"200px"}
-                />
-              </div>
-              <div className="mt-10" />
-            </div>
-          </div>
-        )
-      )}
+          )
+        )}
+      </div>
     </div>
   );
 };

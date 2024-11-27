@@ -17,30 +17,28 @@ const FightSetupContent: React.FC = () => {
       title="Ready To Fight?"
       buttonLabel="Start"
     >
-      <>
-        <NumberInput
-          label="Cuantos Rounds?"
-          defaultValue={rounds}
-          onChange={(value) => {
-            setRounds(value);
-          }}
-        />
+      <NumberInput
+        label="Cuantos Rounds?"
+        defaultValue={rounds}
+        onChange={(value) => {
+          setRounds(value);
+        }}
+      />
 
-        <NumberInput
-          label="De Cuantos Minutos?"
-          defaultValue={workMinutes}
-          onChange={(value) => {
-            setWorkMinutes(value);
-          }}
-        />
-        <NumberInput
-          label="Cuantos Minutos de descanso?"
-          defaultValue={restMinutes}
-          onChange={(value) => {
-            setRestMinutes(value);
-          }}
-        />
-      </>
+      <NumberInput
+        label="De Cuantos Minutos?"
+        defaultValue={workMinutes}
+        onChange={(value) => {
+          setWorkMinutes(value);
+        }}
+      />
+      <NumberInput
+        label="Cuantos Minutos de descanso?"
+        defaultValue={restMinutes}
+        onChange={(value) => {
+          setRestMinutes(value);
+        }}
+      />
     </SetupPageWrapper>
   );
 };

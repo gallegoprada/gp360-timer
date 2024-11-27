@@ -41,7 +41,7 @@ const SecondsCountDownTimer: React.FC<CountdownProps> = ({ seconds, type }) => {
 
   return (
     <div
-      className={`flex flex-col items-center justify-center h-screen ${getBackgroundColor()}`}
+      className={`flex flex-col items-center justify-center h-full w-full ${getBackgroundColor()}`}
     >
       <div>
         <h1 className="text-3xl font-bold text-white">

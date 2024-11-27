@@ -14,15 +14,17 @@ const SetupPageWrapper: React.FC<{
         <HeaderWithBackButton />
       </div>
       <div className="h-[70%]">
-        <div className="h-full ">
+        <div className="h-full overflow-y-auto">
           <div className="flex flex-col gap-10 landscape:gap-2 pt-10 pb-10">
             <h1 className="text-3xl">{title}</h1>
-            <div className="h-auto">{children}</div>
+            <div className="h-auto">
+              <div className="flex flex-col gap-1">{children}</div>
+            </div>
           </div>
         </div>
       </div>
       <div className="h-[15%]">
-        <div className="flex justify-center portrait:h-[70px] landscape:h-[95%] pl-10 pr-10">
+        <div className="flex justify-center portrait:h-[70px] landscape:h-[95%] pt-2 pl-10 pr-10">
           <LinkButton to={to} label={buttonLabel}></LinkButton>
         </div>
       </div>
