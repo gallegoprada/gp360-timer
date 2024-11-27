@@ -16,7 +16,7 @@ const SetupPageWrapper: React.FC<{
       <div className="h-[70%]">
         <div className="h-full overflow-y-auto">
           <div className="flex flex-col gap-10 landscape:gap-2 pt-10 pb-10">
-            <h1 className="text-3xl">{title}</h1>
+            <h1 className="text-3xl text-white">{title}</h1>
             <div className="h-auto">
               <div className="flex flex-col gap-1">{children}</div>
             </div>
