@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+
 import NumberInput from "../components/NumberInput";
 import MainLayout from "../components/MainLayout";
-import HeaderWithBackButton from "../components/HeaderWithBackButton";
-import LinkButton from "../components/LinkButton";
 import SetupPageWrapper from "../components/SetupPageWrapper";
 
 const FightSetupContent: React.FC = () => {

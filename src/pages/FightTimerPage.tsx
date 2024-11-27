@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams, Link } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 // import SecondsCountDownDisplayer from "../components/SecondsCountDownDisplayer";
 import TimerDisplay from "../components/SecondsToMinutesDisplay";
 import HeaderWithBackButton from "../components/HeaderWithBackButton";
