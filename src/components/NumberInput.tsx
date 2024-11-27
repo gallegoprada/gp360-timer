@@ -26,7 +26,7 @@ export default function NumberInput({
     <div className="max-w-xs mx-auto flex flex-col items-center w-full">
       <label
         htmlFor="quantity-input"
-        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white w-full"
+        className="block mb-2 text-sm font-medium text-white w-full"
       >
         {label}
       </label>
@@ -35,11 +35,11 @@ export default function NumberInput({
           type="button"
           id="decrement-button"
           data-input-counter-decrement="quantity-input"
-          className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-l-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
+          className="bg-gray-700 hover:bg-gray-600 border-gray-600 rounded-l-lg p-3 h-11 focus:ring-gray-700 focus:ring-2 focus:outline-none"
           onClick={() => handleChange(Math.max(count - 1, 1))}
         >
           <svg
-            className="w-3 h-3 text-gray-900 dark:text-white"
+            className="w-3 h-3 text-white"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -59,7 +59,7 @@ export default function NumberInput({
           id="quantity-input"
           data-input-counter
           aria-describedby="helper-text-explanation"
-          className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="h-11 text-center  text-sm block w-full py-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white "
           placeholder="3"
           required
           value={count}
@@ -68,11 +68,11 @@ export default function NumberInput({
           type="button"
           id="increment-button"
           data-input-counter-increment="quantity-input"
-          className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-r-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
+          className=" bg-gray-700 hover:bg-gray-600 border-gray-600  border rounded-r-lg p-3 h-11  focus:ring-gray-700 focus:ring-2 focus:outline-none"
           onClick={() => handleChange(count + 1)}
         >
           <svg
-            className="w-3 h-3 text-gray-900 dark:text-white"
+            className="w-3 h-3text-white"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
