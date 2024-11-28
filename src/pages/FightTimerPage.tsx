@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
-// import SecondsCountDownDisplayer from "../components/SecondsCountDownDisplayer";
 import TimerDisplay from "../components/SecondsToMinutesDisplay";
 import HeaderWithBackButton from "../components/HeaderWithBackButton";
 
@@ -24,35 +23,26 @@ const FightTimer: React.FC = () => {
   const [isFinished, setIsFinished] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
 
+  // Add refs for audio elements
+  const roundStartSound = useRef(new Audio("/sounds/bell-start.mp3"));
+  const tenSecondsSound = useRef(new Audio("/sounds/Clapper.mp3"));
+  const roundEndSound = useRef(new Audio("/sounds/bell.mp3"));
+
   useEffect(() => {
     const timersArray: TimerPhase[] = [];
 
     for (let i = 0; i < rounds; i++) {
       if (workMinutes) {
-        // timersArray.push({
-        //   round: i + 1,
-        //   seconds: workMinutes * 60,
-        //   type: "work",
-        // });
-
-        // if (i < rounds - 1) {
-        //   timersArray.push({
-        //     round: i + 1,
-        //     seconds: restMinutes * 60,
-        //     type: "rest",
-        //   });
-        // }
-
         timersArray.push({
           round: i + 1,
-          seconds: workMinutes * 3,
+          seconds: workMinutes * 60,
           type: "work",
         });
 
         if (i < rounds - 1) {
           timersArray.push({
             round: i + 1,
-            seconds: restMinutes * 3,
+            seconds: restMinutes * 60,
             type: "rest",
           });
         }
@@ -70,11 +60,29 @@ const FightTimer: React.FC = () => {
   useEffect(() => {
     if (currentPhaseIndex >= timers.length || isPaused || isFinished) return;
 
+    // Play round start sound when a new work phase begins
+    if (
+      currentSeconds === timers[currentPhaseIndex].seconds &&
+      timers[currentPhaseIndex].type === "work"
+    ) {
+      roundStartSound.current.play().catch(console.error);
+    }
+
     const timer = setInterval(() => {
       setCurrentSeconds((prev) => {
+        // Play sound when 10 seconds remaining in work rounds
+        if (prev === 11 && timers[currentPhaseIndex].type === "work") {
+          tenSecondsSound.current.play().catch(console.error);
+        }
+
         if (prev > 0) return prev - 1;
 
         clearInterval(timer);
+
+        // Play round end sound for work rounds
+        if (timers[currentPhaseIndex].type === "work") {
+          roundEndSound.current.play().catch(console.error);
+        }
 
         // Move to the next phase or mark as finished
         if (currentPhaseIndex < timers.length - 1) {
@@ -88,6 +96,18 @@ const FightTimer: React.FC = () => {
     }, 1000);
 
     return () => clearInterval(timer);
+  }, [currentPhaseIndex, timers, isPaused, isFinished]);
+
+  // Add this new effect to play start sound when changing phases
+  useEffect(() => {
+    if (
+      currentPhaseIndex < timers.length &&
+      timers[currentPhaseIndex]?.type === "work" &&
+      !isPaused &&
+      !isFinished
+    ) {
+      roundStartSound.current.play().catch(console.error);
+    }
   }, [currentPhaseIndex, timers, isPaused, isFinished]);
 
   // Update the `currentSeconds` whenever the `currentPhaseIndex` changes
@@ -142,18 +162,6 @@ const FightTimer: React.FC = () => {
                   {isPaused ? "Resume" : "Pause"}
                 </button>
               </div>
-              {/* <div>
-                <div className="mt-10" />
-                <div className="flex w-full justify-center items-end space-x-8 space-y-8">
-                  <img
-                    src="/images/gp360-logo.png"
-                    alt="Logo"
-                    height={"200px"}
-                    width={"200px"}
-                  />
-                </div>
-                <div className="mt-10" />
-              </div> */}
             </div>
           )
         )}
