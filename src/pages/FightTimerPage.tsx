@@ -89,14 +89,6 @@ const FightTimer: React.FC = () => {
   useEffect(() => {
     if (currentPhaseIndex >= timers.length || isPaused || isFinished) return;
 
-    // Play round start sound when a new work phase begins
-    if (
-      currentSeconds === timers[currentPhaseIndex].seconds &&
-      timers[currentPhaseIndex].type === "work"
-    ) {
-      roundStartSound.current.play().catch(console.error);
-    }
-
     const timer = setInterval(() => {
       setCurrentSeconds((prev) => {
         // Play sound when 10 seconds remaining in work rounds
@@ -108,8 +100,11 @@ const FightTimer: React.FC = () => {
 
         clearInterval(timer);
 
-        // Play round end sound for work rounds
-        if (timers[currentPhaseIndex].type === "work") {
+        // Play round end sound for work rounds or final end
+        if (
+          timers[currentPhaseIndex].type === "work" ||
+          currentPhaseIndex === timers.length - 1
+        ) {
           roundEndSound.current.play().catch(console.error);
         }
 
