@@ -9,6 +9,13 @@ interface TimerPhase {
   type: string;
 }
 
+// Add this near the top of the component, after the interface definition
+const preloadAudio = (url: string): HTMLAudioElement => {
+  const audio = new Audio(url);
+  audio.load(); // Preload the audio file
+  return audio;
+};
+
 const FightTimer: React.FC = () => {
   const [searchParams] = useSearchParams();
 
@@ -23,10 +30,32 @@ const FightTimer: React.FC = () => {
   const [isFinished, setIsFinished] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
 
-  // Add refs for audio elements
-  const roundStartSound = useRef(new Audio("/sounds/bell-start.mp3"));
-  const tenSecondsSound = useRef(new Audio("/sounds/Clapper.mp3"));
-  const roundEndSound = useRef(new Audio("/sounds/bell.mp3"));
+  // Replace the existing audio refs with preloaded audio
+  const roundStartSound = useRef(preloadAudio("/sounds/bell-start.mp3"));
+  const tenSecondsSound = useRef(preloadAudio("/sounds/Clapper.mp3"));
+  const roundEndSound = useRef(preloadAudio("/sounds/bell.mp3"));
+
+  // Add a preload effect
+  useEffect(() => {
+    // Create promises for each audio load
+    const loadPromises = [
+      roundStartSound.current.load(),
+      tenSecondsSound.current.load(),
+      roundEndSound.current.load(),
+    ];
+
+    // Wait for all sounds to load
+    Promise.all(loadPromises).catch((error) => {
+      console.error("Error preloading sounds:", error);
+    });
+
+    // Optional: Clean up
+    return () => {
+      roundStartSound.current.pause();
+      tenSecondsSound.current.pause();
+      roundEndSound.current.pause();
+    };
+  }, []); // Empty dependency array means this runs once on mount
 
   useEffect(() => {
     const timersArray: TimerPhase[] = [];
