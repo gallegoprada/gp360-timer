@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import TimerDisplay from "../components/SecondsToMinutesDisplay";
 import HeaderWithBackButton from "../components/HeaderWithBackButton";
+import { Howl } from "howler";
 
 interface TimerPhase {
   round: number;
@@ -10,10 +11,18 @@ interface TimerPhase {
 }
 
 // Add this near the top of the component, after the interface definition
-const preloadAudio = (url: string): HTMLAudioElement => {
-  const audio = new Audio(url);
-  audio.load(); // Preload the audio file
-  return audio;
+// const preloadAudio = (url: string): HTMLAudioElement => {
+//   const audio = new Audio(url);
+//   audio.load(); // Preload the audio file
+//   return audio;
+// };
+
+// Create sounds once, outside of component
+const sounds = {
+  start: new Howl({ src: ["/sounds/bell-start.mp3"], preload: true }),
+  tenSeconds: new Howl({ src: ["/sounds/Clapper.mp3"], preload: true }),
+  end: new Howl({ src: ["/sounds/bell.mp3"], preload: true }),
+  secondsOut: new Howl({ src: ["/sounds/seconds_out.mp3"], preload: true }),
 };
 
 const FightTimer: React.FC = () => {
@@ -31,31 +40,31 @@ const FightTimer: React.FC = () => {
   const [isPaused, setIsPaused] = useState(false);
 
   // Replace the existing audio refs with preloaded audio
-  const roundStartSound = useRef(preloadAudio("/sounds/bell-start.mp3"));
-  const tenSecondsSound = useRef(preloadAudio("/sounds/Clapper.mp3"));
-  const roundEndSound = useRef(preloadAudio("/sounds/bell.mp3"));
+  // const roundStartSound = useRef(preloadAudio("/sounds/bell-start.mp3"));
+  // const tenSecondsSound = useRef(preloadAudio("/sounds/Clapper.mp3"));
+  // const roundEndSound = useRef(preloadAudio("/sounds/bell.mp3"));
 
   // Add a preload effect
-  useEffect(() => {
-    // Create promises for each audio load
-    const loadPromises = [
-      roundStartSound.current.load(),
-      tenSecondsSound.current.load(),
-      roundEndSound.current.load(),
-    ];
+  // useEffect(() => {
+  //   // Create promises for each audio load
+  //   const loadPromises = [
+  //     roundStartSound.current.load(),
+  //     tenSecondsSound.current.load(),
+  //     roundEndSound.current.load(),
+  //   ];
 
-    // Wait for all sounds to load
-    Promise.all(loadPromises).catch((error) => {
-      console.error("Error preloading sounds:", error);
-    });
+  //   // Wait for all sounds to load
+  //   Promise.all(loadPromises).catch((error) => {
+  //     console.error("Error preloading sounds:", error);
+  //   });
 
-    // Optional: Clean up
-    return () => {
-      roundStartSound.current.pause();
-      tenSecondsSound.current.pause();
-      roundEndSound.current.pause();
-    };
-  }, []); // Empty dependency array means this runs once on mount
+  //   // Optional: Clean up
+  //   return () => {
+  //     roundStartSound.current.pause();
+  //     tenSecondsSound.current.pause();
+  //     roundEndSound.current.pause();
+  //   };
+  // }, []); // Empty dependency array means this runs once on mount
 
   useEffect(() => {
     const timersArray: TimerPhase[] = [];
@@ -85,27 +94,36 @@ const FightTimer: React.FC = () => {
     }
   }, [workMinutes, rounds, restMinutes]);
 
-  // Countdown logic
+  // Modify the countdown useEffect
   useEffect(() => {
     if (currentPhaseIndex >= timers.length || isPaused || isFinished) return;
 
+    // Play start sound at beginning of work rounds
+    if (
+      currentSeconds === timers[currentPhaseIndex].seconds &&
+      timers[currentPhaseIndex].type === "work"
+    ) {
+      sounds.start.play();
+    }
+
     const timer = setInterval(() => {
       setCurrentSeconds((prev) => {
-        // Play sound when 10 seconds remaining in work rounds
-        if (prev === 11 && timers[currentPhaseIndex].type === "work") {
-          tenSecondsSound.current.play().catch(console.error);
+        // Play appropriate sound when 10 seconds remaining
+        if (prev === 10) {
+          if (timers[currentPhaseIndex].type === "work") {
+            sounds.tenSeconds.play();
+          } else if (timers[currentPhaseIndex].type === "rest") {
+            sounds.secondsOut.play();
+          }
         }
 
         if (prev > 0) return prev - 1;
 
         clearInterval(timer);
 
-        // Play round end sound for work rounds or final end
-        if (
-          timers[currentPhaseIndex].type === "work" ||
-          currentPhaseIndex === timers.length - 1
-        ) {
-          roundEndSound.current.play().catch(console.error);
+        // Play end sound only for work rounds
+        if (timers[currentPhaseIndex].type === "work") {
+          sounds.end.play();
         }
 
         // Move to the next phase or mark as finished
@@ -120,19 +138,7 @@ const FightTimer: React.FC = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [currentPhaseIndex, timers, isPaused, isFinished]);
-
-  // Add this new effect to play start sound when changing phases
-  useEffect(() => {
-    if (
-      currentPhaseIndex < timers.length &&
-      timers[currentPhaseIndex]?.type === "work" &&
-      !isPaused &&
-      !isFinished
-    ) {
-      roundStartSound.current.play().catch(console.error);
-    }
-  }, [currentPhaseIndex, timers, isPaused, isFinished]);
+  }, [currentPhaseIndex, timers, isPaused, isFinished, currentSeconds]);
 
   // Update the `currentSeconds` whenever the `currentPhaseIndex` changes
   useEffect(() => {
@@ -151,12 +157,7 @@ const FightTimer: React.FC = () => {
       <div className="h-[15%]">
         <HeaderWithBackButton />
       </div>
-      <div
-        // style={{
-        //   backgroundImage: `url("/images/gp360-logo.png")`,
-        // }}
-        className="h-[85%] bg-center bg-no-repeat"
-      >
+      <div className="h-[85%] bg-center bg-no-repeat">
         {isFinished ? (
           <div className="flex justify-center items-center h-full">
             <h1 className="text-center text-3xl font-bold mt-8 text-gray-200">
