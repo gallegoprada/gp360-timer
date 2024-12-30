@@ -7,16 +7,23 @@ import SetupPageWrapper from "../components/SetupPageWrapper";
 const FightSetupContent: React.FC = () => {
   const [rounds, setRounds] = useState(3);
   const [workMinutes, setWorkMinutes] = useState(3);
-  const [restMinutes, setRestMinutes] = useState(1);
-
+  const [restSeconds, setRestSeconds] = useState(60);
+  const [preparationSeconds, setPreparationSeconds] = useState(10);
   return (
     <SetupPageWrapper
-      to={`/fightTimer?work=${workMinutes}&rest=${restMinutes}&rounds=${rounds}`}
+      to={`/fightTimer?work=${workMinutes}&restSeconds=${restSeconds}&rounds=${rounds}&preparationSeconds=${preparationSeconds}`}
       title="Ready To Fight?"
       buttonLabel="Start"
     >
       <NumberInput
-        label="Cuantos Rounds?"
+        label="Preparacion (s)?"
+        defaultValue={preparationSeconds}
+        onChange={(value) => {
+          setPreparationSeconds(value);
+        }}
+      />
+      <NumberInput
+        label="Numero de Rounds"
         defaultValue={rounds}
         onChange={(value) => {
           setRounds(value);
@@ -24,17 +31,17 @@ const FightSetupContent: React.FC = () => {
       />
 
       <NumberInput
-        label="De Cuantos Minutos?"
+        label="Duracion Round (min)?"
         defaultValue={workMinutes}
         onChange={(value) => {
           setWorkMinutes(value);
         }}
       />
       <NumberInput
-        label="Cuantos Minutos de descanso?"
-        defaultValue={restMinutes}
+        label="Duracion Descanso (s)?"
+        defaultValue={restSeconds}
         onChange={(value) => {
-          setRestMinutes(value);
+          setRestSeconds(value);
         }}
       />
     </SetupPageWrapper>

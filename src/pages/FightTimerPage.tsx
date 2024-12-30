@@ -31,7 +31,9 @@ const FightTimer: React.FC = () => {
   // Get the values of query parameters and convert them to numbers
   const workMinutes = Number(searchParams.get("work"));
   const rounds = Number(searchParams.get("rounds"));
-  const restMinutes = Number(searchParams.get("rest"));
+  const restSeconds = Number(searchParams.get("restSeconds"));
+  const preparationSeconds = Number(searchParams.get("preparationSeconds"));
+
   // State to hold the sequence of timer phases
   const [timers, setTimers] = useState<TimerPhase[]>([]);
   const [currentPhaseIndex, setCurrentPhaseIndex] = useState(0);
@@ -69,6 +71,12 @@ const FightTimer: React.FC = () => {
   useEffect(() => {
     const timersArray: TimerPhase[] = [];
 
+    timersArray.push({
+      round: 0,
+      seconds: preparationSeconds,
+      type: "preparation",
+    });
+
     for (let i = 0; i < rounds; i++) {
       if (workMinutes) {
         timersArray.push({
@@ -80,7 +88,7 @@ const FightTimer: React.FC = () => {
         if (i < rounds - 1) {
           timersArray.push({
             round: i + 1,
-            seconds: restMinutes * 60,
+            seconds: restSeconds,
             type: "rest",
           });
         }
@@ -92,7 +100,7 @@ const FightTimer: React.FC = () => {
     if (timersArray.length > 0) {
       setCurrentSeconds(timersArray[0].seconds); // Initialize with the first phase’s seconds
     }
-  }, [workMinutes, rounds, restMinutes]);
+  }, [workMinutes, rounds, restSeconds, preparationSeconds]);
 
   // Modify the countdown useEffect
   useEffect(() => {
@@ -109,7 +117,7 @@ const FightTimer: React.FC = () => {
     const timer = setInterval(() => {
       setCurrentSeconds((prev) => {
         // Play appropriate sound when 10 seconds remaining
-        if (prev === 10) {
+        if (prev === 11) {
           if (timers[currentPhaseIndex].type === "work") {
             sounds.tenSeconds.play();
           } else if (timers[currentPhaseIndex].type === "rest") {
@@ -169,23 +177,63 @@ const FightTimer: React.FC = () => {
             <div className="flex flex-col items-center h-screen w-screen">
               <div className="flex flex-col items-center w-full justify-center  flex-1">
                 <div className="text-center font-bold text-3xl">
-                  {timers[currentPhaseIndex].type === "work"
+                  {timers[currentPhaseIndex].type === "preparation"
+                    ? "PREPARATE!"
+                    : timers[currentPhaseIndex].type === "work"
                     ? "ROUND "
                     : "REST "}
-                  {timers[currentPhaseIndex].type === "work"
+                  {timers[currentPhaseIndex].type !== "preparation"
                     ? timers[currentPhaseIndex].round
                         .toString()
                         .concat(" / ", rounds.toString())
-                    : timers[currentPhaseIndex].round.toString()}
+                    : null}
                   <TimerDisplay totalSeconds={currentSeconds} />
                 </div>
                 <div className="mt-10" />
-                <button
-                  onClick={togglePause}
-                  className="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-4 rounded-md"
-                >
-                  {isPaused ? "Resume" : "Pause"}
-                </button>
+                {timers[currentPhaseIndex].type !== "preparation" && (
+                  <button
+                    onClick={togglePause}
+                    className="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-4 rounded-md"
+                  >
+                    {isPaused ? "Resume" : "Pause"}
+                  </button>
+                )}
+
+                {/* if isPaused we want to also show 2 more buttons 1 to move to NEXT round and the other to restart the current round */}
+                {isPaused && (
+                  <div className="flex flex-row gap-2">
+                    <button
+                      className="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-4 rounded-md"
+                      onClick={() => {
+                        // setCurrentPhaseIndex((prev) => prev - 1);
+                        setCurrentSeconds(timers[currentPhaseIndex].seconds);
+                        setIsPaused(false);
+                      }}
+                    >
+                      Restart
+                    </button>
+
+                    {/* only show next if it has a next round */}
+                    {timers[currentPhaseIndex].round < rounds && (
+                      <button
+                        className="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-4 rounded-md"
+                        onClick={() => {
+                          if (timers[currentPhaseIndex].type === "work") {
+                            setCurrentPhaseIndex((prev) => prev + 2);
+                          } else if (
+                            timers[currentPhaseIndex].type === "rest"
+                          ) {
+                            setCurrentPhaseIndex((prev) => prev + 1);
+                          }
+                          setCurrentSeconds(timers[currentPhaseIndex].seconds);
+                          setIsPaused(false);
+                        }}
+                      >
+                        Next
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           )
