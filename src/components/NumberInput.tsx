@@ -63,6 +63,7 @@ export default function NumberInput({
           placeholder="3"
           required
           value={count}
+          onChange={(e) => handleChange(parseInt(e.target.value || "0"))}
         />
         <button
           type="button"

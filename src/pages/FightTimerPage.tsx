@@ -23,6 +23,7 @@ const sounds = {
   tenSeconds: new Howl({ src: ["/sounds/Clapper.mp3"], preload: true }),
   end: new Howl({ src: ["/sounds/bell.mp3"], preload: true }),
   secondsOut: new Howl({ src: ["/sounds/seconds_out.mp3"], preload: true }),
+  threeSeconds: new Howl({ src: ["/sounds/three-seconds.mp3"], preload: true }),
 };
 
 const FightTimer: React.FC = () => {
@@ -125,6 +126,10 @@ const FightTimer: React.FC = () => {
           }
         }
 
+        if (prev === 4 && timers[currentPhaseIndex].type === "preparation") {
+          sounds.threeSeconds.play();
+        }
+
         if (prev > 0) return prev - 1;
 
         clearInterval(timer);
@@ -169,7 +174,7 @@ const FightTimer: React.FC = () => {
         {isFinished ? (
           <div className="flex justify-center items-center h-full">
             <h1 className="text-center text-3xl font-bold mt-8 text-gray-200">
-              Bien Hecho!
+              ¡Buen Trabajo!
             </h1>
           </div>
         ) : (
@@ -178,10 +183,10 @@ const FightTimer: React.FC = () => {
               <div className="flex flex-col items-center w-full justify-center  flex-1">
                 <div className="text-center font-bold text-3xl">
                   {timers[currentPhaseIndex].type === "preparation"
-                    ? "PREPARATE!"
+                    ? "¡Preparate!"
                     : timers[currentPhaseIndex].type === "work"
-                    ? "ROUND "
-                    : "REST "}
+                    ? "Round "
+                    : "Descanso "}
                   {timers[currentPhaseIndex].type !== "preparation"
                     ? timers[currentPhaseIndex].round
                         .toString()

@@ -16,7 +16,7 @@ const FightSetupContent: React.FC = () => {
       buttonLabel="Start"
     >
       <NumberInput
-        label="Preparacion (s)?"
+        label="Preparacion (s)"
         defaultValue={preparationSeconds}
         onChange={(value) => {
           setPreparationSeconds(value);
@@ -31,14 +31,14 @@ const FightSetupContent: React.FC = () => {
       />
 
       <NumberInput
-        label="Duracion Round (min)?"
+        label="Duracion Round (min)"
         defaultValue={workMinutes}
         onChange={(value) => {
           setWorkMinutes(value);
         }}
       />
       <NumberInput
-        label="Duracion Descanso (s)?"
+        label="Duracion Descanso (s)"
         defaultValue={restSeconds}
         onChange={(value) => {
           setRestSeconds(value);
